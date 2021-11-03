@@ -32,33 +32,39 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', function () {
+$routes->get('/', function(){
 	$data = [
-		'title' => "Blog - Home"
+		'title' => "Blog - Home",
 	];
-	echo view ('layouts/header',$data);
-	echo view ('layouts/navbar');
-    echo view ('v_home');
-    echo view ('layouts/footer');
-});
 
-$routes->get('/register','templating::register');
-$routes->post('/saveRegister','templating::saveRegister');
+	echo view('layouts/header', $data);
+	echo view('layouts/navbar');
+	echo view('v_home');
+	echo view('layouts/footer');
+});
+$routes->get('/register', 'Templating::register');
+$routes->post('/saveRegister', 'Templating::saveRegister');
+$routes->get('/biodata/(:alpha)/(:num)', 'Home::fungsiBaru/$1/$2');
 $routes->get('/posts', 'PostController::index');
 
-$routes->get('/about', function (){
+$routes->get('/about', function(){
 	$data = [
-		'title' => "Blog - About"
+		'title' => "Blog - About",
 	];
-	echo view ('layouts/header',$data);
-	echo view ('layouts/navbar');
-    echo view ('v_about');
-    echo view ('layouts/footer');
+	echo view('layouts/header', $data);
+	echo view('layouts/navbar');
+	return view ('v_about');
+	echo view('layouts/footer');
 });
-$routes->get('/admin','templating::index');
+
+$routes->get('/admin', 'Templating::index');
 $routes->get('/admin/posts', 'AdminPostsController::index');
 $routes->get('/admin/posts/create', 'AdminPostsController::create');
-$routes->post('/admin/posts/store','AdminPostsController::store');
+$routes->get('/admin/posts/edit/(:segment)', 'AdminPostsController::edit/$1');
+$routes->get('/admin/posts/delete/(:segment)', 'AdminPostsController::delete/$1');
+$routes->post('/admin/posts/update/(:segment)', 'AdminPostsController::update/$1');
+$routes->post('/admin/posts/store', 'AdminPostsController::store');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
